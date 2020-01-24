@@ -3,62 +3,162 @@
 <head>
 <meta charset="utf-8">
 <title>新年快乐</title>
-	<style>
-		body{background-image: url('1.jpg');background-repeat: no-repeat;}
-		.first{
-  width: 200px;
-  height: 200px;
-  background-color:aqua;
-  transition: all 4s;
+	
+		<script>
+function myFunction()
+{
+    alert("老师新年快乐 鼠年大吉 心想事成 愿2020年是更加幸运的一年 ");
 }
-
-.two:hover{
-  background-color: #00f;
-  transform: translateX(500px) translateY(500px) scale(0.8) rotate(360deg);
-}
-		div{
-  width: 200px;
-  height: 200px;
-  background-color: #f00;
-  transition: all 3s;
-}
-
-div:hover{
-  background-color: #00f;
-  transform: translateX(500px) translateY(500px) scale(0.8) rotate(360deg);
-}
-		.three{
-  width: 200px;
-  height: 200px;
-  background-color:antiquewhite;
-  transition: all 2s;
-}
-
-div:hover{
-  background-color: #00f;
-  transform: translateX(500px) translateY(500px) scale(0.8) rotate(360deg);
-}
-		.four{
-  width: 200px;
-  height: 200px;
-  background-color:orange;
-  transition: all 1s;
-}
-
-div:hover{
-  background-color: #00f;
-  transform: translateX(500px) translateY(500px) scale(0.8) rotate(360deg);
-}
-	</style>
+</script>
 </head>
+<body style='background-color:black'>
 
-	
-	
+<canvas id='myCanvas' width='1000' height='1000'></canvas>
+
+<script>
+
+const max_fireworks = 5,
+
+max_sparks = 50;
+
+let canvas = document.getElementById('myCanvas');
+
+let context = canvas.getContext('2d');
+
+let fireworks = [];
+
+for (let i = 0; i < max_fireworks; i++) {
+
+let firework = {
+
+sparks: []
+
+};
+
+for (let n = 0; n < max_sparks; n++) {
+
+let spark = {
+
+vx: Math.random() * 5 + .5,
+
+vy: Math.random() * 5 + .5,
+
+weight: Math.random() * .3 + .03,
+
+red: Math.floor(Math.random() * 2),
+
+green: Math.floor(Math.random() * 2),
+
+blue: Math.floor(Math.random() * 2)
+
+};
+
+if (Math.random() > .5) spark.vx = -spark.vx;
+
+if (Math.random() > .5) spark.vy = -spark.vy;
+
+firework.sparks.push(spark);
+
+}
+
+fireworks.push(firework);
+
+resetFirework(firework);
+
+}
+
+window.requestAnimationFrame(explode);
+
+
+function resetFirework(firework) {
+
+firework.x = Math.floor(Math.random() * canvas.width);
+
+firework.y = canvas.height;
+
+firework.age = 0;
+
+firework.phase = 'fly';
+
+}
+
+function explode() {
+
+context.clearRect(0, 0, canvas.width, canvas.height);
+
+fireworks.forEach((firework,index) => {
+
+if (firework.phase == 'explode') {
+
+firework.sparks.forEach((spark) => {
+
+for (let i = 0; i < 10; i++) {
+
+let trailAge = firework.age + i;
+
+let x = firework.x + spark.vx * trailAge;
+
+let y = firework.y + spark.vy * trailAge + spark.weight * trailAge * spark.weight * trailAge;
+
+let fade = i * 20 - firework.age * 2;
+
+let r = Math.floor(spark.red * fade);
+
+let g = Math.floor(spark.green * fade);
+
+let b = Math.floor(spark.blue * fade);
+
+context.beginPath();
+
+context.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',1)';
+
+context.rect(x, y, 4, 4);
+
+context.fill();
+
+}
+
+});
+
+firework.age++;
+
+if (firework.age > 100 && Math.random() < .05) {
+
+resetFirework(firework);
+
+}
+
+} else {
+
+firework.y = firework.y - 10;
+
+for (let spark = 0; spark < 15; spark++) {
+
+context.beginPath();
+
+context.fillStyle = 'rgba(' + index * 50 + ',' + spark * 17 + ',0,1)';
+
+context.rect(firework.x + Math.random() * spark - spark / 2, firework.y + spark * 4, 4, 4);
+
+context.fill();
+
+}
+
+if (Math.random() < .001 || firework.y < 200) firework.phase = 'explode';
+
+}
+
+});
+
+window.requestAnimationFrame(explode);
+
+}
+
+</script>
 <body>
-	<div class="first">点我      新</div>
-	<div class="two">这里      年</div>
-	<div  class="three"> 哈哈      快</div>
-	<div>好运      乐</div>
+	，<center><input type="button" onclick="myFunction()" value="点我"></center>
+	<audio  src="1.mp3" autoplay></audio>
+		
 </body>
-</html>
 
+</html>
